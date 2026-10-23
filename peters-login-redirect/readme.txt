@@ -73,6 +73,9 @@ Please visit the [plugin page](https://loginwp.com/?utm_source=wprepo&utm_medium
 
 Login redirects not working? This plugin uses WordPress's standard login_redirect hook. The usual cause of problems is that another plugin is using the hook first, or there is a custom login form that isn't even running through the standard WordPress login functions.
 
+= Where do I report security bugs found in this plugin? =
+Please report security bugs found in the source code of the Login WP plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/d3932817-a6d6-469e-a3d0-91e57ae05979). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
 == Changelog ==
 
 
