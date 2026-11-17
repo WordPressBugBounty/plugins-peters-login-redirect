@@ -183,6 +183,42 @@ class RedirectWPList extends \WP_List_Table
     }
 
     /**
+     * @param int $id
+     *
+     * @return string
+     */
+    public static function toggle_rule_url($id)
+    {
+        return wp_nonce_url(
+            add_query_arg(['action' => 'toggle', 'id' => absint($id)], PTR_LOGINWP_REDIRECTIONS_PAGE_URL),
+            'loginwp-toggle-rule'
+        );
+    }
+
+    /**
+     * @param mixed $item
+     *
+     * @return string
+     */
+    public function column_rul_status($item)
+    {
+        $rule_id = absint($item['id']);
+        $enabled = Helpers::is_rule_enabled($rule_id);
+        $bg      = $enabled ? '#2271b1' : '#a7aaad';
+        $knob    = $enabled ? 'left:22px;' : 'left:2px;';
+        $label   = $enabled ? __('Enabled. Click to disable.', 'peters-login-redirect') : __('Disabled. Click to enable.', 'peters-login-redirect');
+
+        return sprintf(
+            '<a href="%1$s" role="switch" aria-checked="%2$s" title="%3$s" aria-label="%3$s" style="display:inline-block;position:relative;width:44px;height:24px;border-radius:12px;background:%4$s;text-decoration:none;"><span style="position:absolute;top:2px;%5$swidth:20px;height:20px;border-radius:50%%;background:#fff;transition:left .15s;"></span></a>',
+            esc_url(self::toggle_rule_url($rule_id)),
+            $enabled ? 'true' : 'false',
+            esc_attr($label),
+            esc_attr($bg),
+            esc_attr($knob)
+        );
+    }
+
+    /**
      * @param mixed $item
      *
      * @return string
@@ -221,7 +257,8 @@ class RedirectWPList extends \WP_List_Table
             'rul_url'        => __('Login URL', 'peters-login-redirect'),
             'rul_url_logout' => __('Logout URL', 'peters-login-redirect'),
             'rul_type'       => __('Condition', 'peters-login-redirect'),
-            'rul_value'      => __('Condition Value', 'peters-login-redirect')
+            'rul_value'      => __('Condition Value', 'peters-login-redirect'),
+            'rul_status'     => __('Enabled', 'peters-login-redirect')
         );
 
         return $columns;
@@ -282,6 +319,8 @@ class RedirectWPList extends \WP_List_Table
             ['id' => $rule_id],
             ['%d']
         );
+
+        Helpers::set_rule_enabled($rule_id, true);
     }
 
     public function process_actions()
@@ -289,6 +328,18 @@ class RedirectWPList extends \WP_List_Table
         // bail if user is not an admin or without admin privileges.
         if ( ! current_user_can('manage_options')) {
             return;
+        }
+
+        if ('toggle' === $this->current_action() && ! empty($_GET['id'])) {
+
+            check_admin_referer('loginwp-toggle-rule');
+
+            $rule_id = absint($_GET['id']);
+
+            Helpers::set_rule_enabled($rule_id, ! Helpers::is_rule_enabled($rule_id));
+
+            wp_safe_redirect(PTR_LOGINWP_REDIRECTIONS_PAGE_URL);
+            exit;
         }
 
         if ('delete' === $this->current_action() && ! empty($_GET['id'])) {

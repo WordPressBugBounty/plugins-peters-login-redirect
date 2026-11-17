@@ -4,7 +4,7 @@ Tags: after registration redirect, login redirect, logout redirect
 Requires at least: 5.6
 Requires PHP: 7.4
 Tested up to: 7.0
-Stable tag: 3.0.9.0
+Stable tag: 3.0.9.1
 License: GPL-2.0+
 
 Redirect users to different locations after they log in, log out and register based on different conditions.
@@ -78,6 +78,11 @@ Please report security bugs found in the source code of the Login WP plugin thro
 
 == Changelog ==
 
+
+= 3.0.9.1 =
+
+* Added: Option to enable/disable redirection rules without deleting them
+* Improved: Collapsible postboxes on admin pages
 
 = 3.0.9.0 =
 

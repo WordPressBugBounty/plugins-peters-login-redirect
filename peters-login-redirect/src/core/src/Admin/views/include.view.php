@@ -74,6 +74,10 @@ do_action('add_meta_boxes', 'ptrloginwpredirection', new WP_Post(new stdClass())
         </div>
         <div id="postbox-container-2" class="postbox-container">
             <?php do_meta_boxes('ptrloginwpredirection', 'advanced', ''); ?>
+            <?php
+            $pro_features_campaign = 'redirect_urls_do_more_with_pro';
+            require dirname(__FILE__) . '/view.pro-features.php';
+            ?>
         </div>
     </div>
     <br class="clear">

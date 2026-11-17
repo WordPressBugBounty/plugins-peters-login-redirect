@@ -116,4 +116,9 @@ $modal_title = esc_html__('View Available Placeholders', 'peters-login-redirect'
             <input class="button button-primary" name="rul_settingssubmit" type="submit" value="<?php _e('Save Changes', 'peters-login-redirect'); ?>"/>
         </p>
     </form>
+
+    <?php
+    $pro_features_campaign = 'redirect_settings_do_more_with_pro';
+    require dirname(__FILE__) . '/view.pro-features.php';
+    ?>
 </div>

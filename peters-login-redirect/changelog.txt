@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 3.0.9.1 =
+
+* Added: Option to enable/disable redirection rules without deleting them
+* Improved: Collapsible postboxes on admin pages
+
 = 3.0.9.0 =
 
 * Improved: Updated and tested for WordPress version 7.0

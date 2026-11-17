@@ -182,11 +182,12 @@ class SettingsPageApi
             <div class="meta-box-sortables">
                 <?php if ( ! empty($this->sidebar_config)): ?>
                     <?php foreach ($this->sidebar_config as $arg) : ?>
-                        <div class="postbox">
+                        <div class="postbox closed">
                             <div class="postbox-header">
                                 <h3 class="hndle is-non-sortable">
                                     <span><?=$arg['section_title']; ?></span>
                                 </h3>
+                                <?=$this->postbox_toggle_button(); ?>
                             </div>
 
                             <div class="inside">
@@ -301,13 +302,40 @@ class SettingsPageApi
         <?php
     }
 
+    public function postbox_toggle_button()
+    {
+        return '<div class="handle-actions hide-if-no-js">' .
+               '<button type="button" class="handlediv" aria-expanded="false">' .
+               '<span class="screen-reader-text">' . esc_html__('Toggle panel', 'peters-login-redirect') . '</span>' .
+               '<span class="toggle-indicator" aria-hidden="true"></span>' .
+               '</button></div>';
+    }
+
     public function metabox_toggle_script()
     {
         ?>
+        <style>
+            .wp_csa_view .postbox-header .hndle {
+                cursor: pointer !important;
+            }
+            .wp_csa_view .postbox .handlediv .toggle-indicator:before,
+            .wp_csa_view .postbox.closed .handlediv .toggle-indicator:before {
+                content: "\f140";
+                display: inline-block;
+                transition: transform .2s ease;
+            }
+            .wp_csa_view .postbox:not(.closed) .handlediv .toggle-indicator:before {
+                transform: rotate(180deg);
+            }
+        </style>
         <script type="text/javascript">
             jQuery(document).ready(function ($) {
-                $('.wp_csa_view .handlediv').click(function () {
-                    $(this).parent().toggleClass("closed").addClass('postbox');
+                $('.wp_csa_view .postbox-header').on('click', function (e) {
+                    if ($(e.target).closest('a, input, select, textarea, label').length) return;
+
+                    var $box = $(this).closest('.postbox');
+                    $box.toggleClass('closed');
+                    $(this).find('.handlediv').attr('aria-expanded', !$box.hasClass('closed'));
                 });
             });
         </script>
@@ -1042,9 +1070,9 @@ public function _header($args)
     $section_title = $args['section_title'];
     ob_start();
     ?>
-    <div class="postbox">
+    <div class="postbox closed">
         <?php do_action('wp_cspa_header', $args, $this->option_name); ?>
-        <div class="postbox-header"><h3 class="hndle is-non-sortable"><span><?=$section_title; ?></span></h3></div>
+        <div class="postbox-header"><h3 class="hndle is-non-sortable"><span><?=$section_title; ?></span></h3><?=$this->postbox_toggle_button(); ?></div>
         <div class="inside">
             <table class="form-table">
                 <?php

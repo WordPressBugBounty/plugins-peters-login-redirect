@@ -51,10 +51,6 @@
     margin-top: 5px;
 }
 
-.loginwp-admin .loginwp-data-listing .handle-actions {
-    display: none
-}
-
 .loginwp-admin .loginwp-view-variables {
     text-align: right;
     padding: 15px 10px 0;
